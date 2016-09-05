@@ -81,7 +81,7 @@ exports.Authenticate = (req, callback) => {
                 callback(null, {success : false , message : "User Authentication failed, wrong password"});
             }else{
                 var token = jwt.sign(user, 'thisismysecrettext', { //<--- should get this from config
-                    expiresIn : 60
+                    expiresIn : 300
                 });
                 callback(null, {
                     success : true, 
