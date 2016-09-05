@@ -1,8 +1,46 @@
 var db = require('../persistence');
+var jwt    = require('jsonwebtoken');
 
 module.exports = function(express){
 
     var router = express.Router();
+
+    router.use((req,res,next) => {
+
+        if(req.url == '/authenticate')
+            return next();
+
+        var token = req.body.token || req.headers.authorization || req.headers['x-access-token'];
+
+        if(token){
+            jwt.verify(token, 'thisismysecrettext', (err,decoded) => {
+                if(err){
+                   return res.json({success : false, message : err.message });
+                }else{
+                    req.decoded = decoded;
+                    next();
+                }
+            });
+        }else{
+           return res.status(403).send({ 
+                success: false, 
+                message: 'No token provided.' 
+            }); 
+        }
+    });
+
+    router.route('/')
+        .get((req,res) => {
+            res.end('Welcome to the coolest api');
+        });
+
+    router.route('/authenticate')
+        .post((req,res) => {
+            db.Authenticate(req, (err, response) => {
+                res.setHeader('Content-Type', 'text/javascript');
+                err ? res.json({error : err}) : res.json(response);
+            })
+        });
 
     router.route('/notes')
         .get((req,res) => {
@@ -43,6 +81,12 @@ module.exports = function(express){
             });
         });
 
+        router.route('/setup')
+            .get((req,res) => {
+                db.CreateUser((err) => {
+                    err ? res.json({error : err}) : res.json({message : 'User created successfully'});
+                })
+            });
 
     return router;
 }

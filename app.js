@@ -3,13 +3,16 @@ var app = express();
 var port = process.env.PORT || 3000;
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
+var config = require('./config');
+var morgan = require('morgan');
+var router = require('./router')(express);
 
-mongoose.connect('mongodb://fosco:testingmlab@ds147965.mlab.com:47965/notes');
+mongoose.connect(config.database);
 
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
-
-var router = require('./router')(express);
+app.set('superSecret', config.secret);
+app.use(morgan('dev'));
 app.use('/api', router);
 
 app.listen(port, () => console.log('Server running on port %s', port));
