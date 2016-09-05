@@ -3,7 +3,7 @@ Creation of simple API using json web token authentication
 
 Expiration token: 300 sec
 
-| Route             | Verbose | Description              |
+| Route             | HTTP Verb | Description              |
 |-------------------|---------|--------------------------|
 | /api/notes        | GET     | Get all notes            |
 | /api/notes/:id    | GET     | Get note by id           |
