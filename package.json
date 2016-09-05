@@ -1,0 +1,28 @@
+{
+  "name": "api_jwt",
+  "version": "1.0.0",
+  "description": "Api JWT",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chicofos/API_JWT.git"
+  },
+  "keywords": [
+    "api",
+    "jwt"
+  ],
+  "author": "Francisco Ochoa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chicofos/API_JWT/issues"
+  },
+  "homepage": "https://github.com/chicofos/API_JWT#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.6.0"
+  }
+}
