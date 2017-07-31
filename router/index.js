@@ -1,5 +1,6 @@
 var db = require('../persistence');
 var jwt    = require('jsonwebtoken');
+var config = require('../config.js');
 
 module.exports = function(express){
 
@@ -7,13 +8,13 @@ module.exports = function(express){
 
     router.use((req,res,next) => {
 
-        if(req.url == '/authenticate')
+        if(req.url == '/authenticate' || req.url == '/setup')
             return next();
 
         var token = req.body.token || req.headers.authorization || req.headers['x-access-token'];
 
         if(token){
-            jwt.verify(token, 'thisismysecrettext', (err,decoded) => {
+            jwt.verify(token, config.secret, (err,decoded) => {
                 if(err){
                    return res.json({success : false, message : err.message });
                 }else{

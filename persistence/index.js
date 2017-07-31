@@ -1,6 +1,7 @@
 
 var Note = require('../models/note');
 var User = require('../models/user');
+var config = require('../config');
 var jwt    = require('jsonwebtoken');
 
 exports.GetAllNotes = (callback) => {
@@ -57,7 +58,7 @@ exports.DeleteNote = (req, callback) => {
 exports.CreateUser = (callback) => {
 
     var usr = new User({
-        name: 'Fosco',
+        name: 'Guest',
         password : 'testing',
         admin : true
     });
@@ -80,7 +81,7 @@ exports.Authenticate = (req, callback) => {
             if(user.password != req.body.password){
                 callback(null, {success : false , message : "User Authentication failed, wrong password"});
             }else{
-                var token = jwt.sign(user, 'thisismysecrettext', { //<--- should get this from config
+                var token = jwt.sign(user, config.secret, {
                     expiresIn : 300
                 });
                 callback(null, {
