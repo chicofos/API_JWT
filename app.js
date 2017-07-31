@@ -6,9 +6,11 @@ var mongoose   = require('mongoose');
 var config = require('./config');
 var morgan = require('morgan');
 var router = require('./router')(express);
+var cors = require('cors'); 
 
 mongoose.connect(config.database);
 
+app.use(cors());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 app.set('superSecret', config.secret);
