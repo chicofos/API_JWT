@@ -6,29 +6,29 @@ module.exports = function(express){
 
     var router = express.Router();
 
-    router.use((req,res,next) => {
+    // router.use((req,res,next) => {
 
-        if(req.url == '/authenticate' || req.url == '/setup')
-            return next();
+    //     if(req.url == '/authenticate' || req.url == '/setup')
+    //         return next();
 
-        var token = req.body.token || req.headers.authorization || req.headers['x-access-token'];
+    //     var token = req.body.token || req.headers.authorization || req.headers['x-access-token'];
 
-        if(token){
-            jwt.verify(token, config.secret, (err,decoded) => {
-                if(err){
-                   return res.json({success : false, message : err.message });
-                }else{
-                    req.decoded = decoded;
-                    next();
-                }
-            });
-        }else{
-           return res.status(403).send({ 
-                success: false, 
-                message: 'No token provided.' 
-            }); 
-        }
-    });
+    //     if(token){
+    //         jwt.verify(token, config.secret, (err,decoded) => {
+    //             if(err){
+    //                return res.json({success : false, message : err.message });
+    //             }else{
+    //                 req.decoded = decoded;
+    //                 next();
+    //             }
+    //         });
+    //     }else{
+    //        return res.status(403).send({ 
+    //             success: false, 
+    //             message: 'No token provided.' 
+    //         }); 
+    //     }
+    // });
 
     router.route('/')
         .get((req,res) => {

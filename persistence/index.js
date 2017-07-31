@@ -69,7 +69,7 @@ exports.CreateUser = (callback) => {
 }
 
 exports.Authenticate = (req, callback) => {
-    
+    console.log(req.body);
     User.findOne({
         name : req.body.name
     }, (err,user) => {
