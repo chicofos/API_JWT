@@ -69,11 +69,13 @@ exports.CreateUser = (callback) => {
 }
 
 exports.Authenticate = (req, callback) => {
-    console.log(req.body);
+    
     User.findOne({
         name : req.body.name
     }, (err,user) => {
-        if(err) callback(err);
+
+        if(err) 
+            callback(err);
 
         if(!user){
             callback(null, {success : false , message : "User Authentication failed, user not found"});

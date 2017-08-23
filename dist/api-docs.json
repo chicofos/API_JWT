@@ -1,0 +1,273 @@
+{
+   "swagger":"2.0",
+   "info":{
+      "version":"1.0.0",
+      "title":"API JWT",
+      "description":"This is a sample server to manage notes",
+      "termsOfService":"https://api-note.herokuapp.com/terms"
+   },
+   "basePath":"/",
+   "tags":[
+      {
+         "name":"Notes",
+         "description":"Everything about the notes"
+      }
+   ],
+   "schemes":[
+      "http"
+   ],
+   "consumes":[
+      "application/json"
+   ],
+   "produces":[
+      "application/json"
+   ],
+   "paths":{   
+      "/api/notes/{id}":{  
+         "get":{
+            "tags":[
+               "Notes"
+            ],
+            "description":"Returns the note for specified id",
+            "operationId":"findById",
+            "produces":[
+               "application/json"
+            ],
+            "parameters":[
+               {
+                  "name":"id",
+                  "in":"path",
+                  "description":"ID to fetch",
+                  "required":true,
+                  "type":"string"
+               }
+            ],
+            "responses":{
+               "200":{
+                  "schema":{
+                     "$ref":"#/definitions/responseGet"
+                  }
+               }
+            }
+         },
+          "delete":{
+            "tags":[
+               "Notes"
+            ],
+            "description":"Deletes a note",
+            "operationId":"delete",
+            "produces":[
+               "application/json"
+            ],
+            "parameters":[
+               {
+                  "name":"id",
+                  "in":"path",
+                  "description":"ID to delete",
+                  "required":true,
+                  "type":"string"
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"delete response",
+                  "schema":{
+                     "$ref":"#/definitions/deleteRes"
+                  }
+               }
+            }
+         },
+         "put":{
+            "tags":[
+               "Notes"
+            ],
+            "description":"Update a note",
+            "operationId":"update",
+            "produces":[
+               "application/json"
+            ],
+            "parameters":[
+               {
+                  "name":"id",
+                  "in":"path",
+                  "description":"ID to update",
+                  "required":true,
+                  "type":"string"
+               },
+               {
+                "name":"text",
+                "in":"body",
+                "description":"text to update",
+                "required":true,
+                "schema":{
+                    "$ref":"#/definitions/update"
+                 }
+             }
+            ],
+            "responses":{
+               "200":{
+                  "description":"update response",
+                  "schema":{
+                     "$ref":"#/definitions/updateResponse"
+                  }
+               }
+            }
+         }
+      },
+      "/api/notes":{  
+        "get":{
+           "tags":[
+              "Notes"
+           ],
+           "description":"Returns all notes",
+           "operationId":"findAll",
+           "produces":[
+              "application/json"
+           ],
+
+           "responses":{
+              "200":{
+                 "description":"response all",
+                 "schema":{
+                    "$ref":"#/definitions/responseAll"
+                 }
+              }
+           }
+        },
+        "post":{
+            "tags":[
+               "Notes"
+            ],
+            "description":"add a new note",
+            "operationId":"addNew",
+            "produces":[
+               "application/json"
+            ],
+            "parameters":[
+               {
+                  "name":"text",
+                  "in":"body",
+                  "description":"description of the note",
+                  "required":true,
+                  "schema":{
+                     "$ref":"#/definitions/create"
+                  }
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"create response",
+                  "schema":{
+                     "$ref":"#/definitions/response"
+                  }
+               }
+            }
+      }
+     }
+   },
+   "definitions":{
+      "create":{
+         "properties":{
+            "text":{
+               "required":true,
+               "type":"string",
+               "example":"This is a new note"
+            }
+         }
+      },
+      "update":{
+        "properties":{
+           "text":{
+              "required":true,
+              "type":"string",
+              "example":"This is a note updated"
+           }
+        }
+     },
+      "responseAll":{
+        "type": "array",
+        "items": {
+
+          "example": 
+                [ 
+                    { 
+                        "_id" : "57b73cc5c74aa5641681f645",
+                        "text" : "Note 1 updated",
+                        "date": "2016-08-19T17:07:17.265Z"
+                     },
+                     { 
+                        "_id" : "57cdf0b8782c6004f4c9680a",
+                        "text" : "Note 2",
+                        "date": "2016-09-05T22:24:56.531Z"
+                     }
+                ]
+          
+        }
+      },
+      "deleteRes" : {
+        "properties":{
+            "message":{
+               "required":true,
+               "type":"integer",
+               "example":"Note deleted"
+            }
+         }
+      },
+      "updateResponse" : {
+        "properties":{
+            "message":{
+               "required":true,
+               "type":"integer",
+               "example":"Note updated"
+            }
+         }
+      },
+      "updateParameter" : {
+        "type": "object",
+            "example" : {
+            "_id" : "57b73cc5c74aa5641681f645",
+            "text" : "Note 1 updated",
+            "date": "2016-08-19T17:07:17.265Z"
+            }
+     },
+      "responseGet" : {
+        "type": "object",
+            "example" : {
+            "_id" : "57b73cc5c74aa5641681f645",
+            "text" : "Note 1 updated",
+            "date": "2016-08-19T17:07:17.265Z"
+            }
+     },
+      "response":{
+         "properties":{
+            "message":{
+               "required":true,
+               "type":"string",
+               "example":"Note created successfully"
+            }
+         }
+      },
+      "delete":{
+         "properties":{
+            "jobID":{
+               "required":true,
+               "type":"string",
+               "example":"234344234234"
+            },
+            "status":{
+               "required":true,
+               "type":"string",
+               "example":"deleted"
+            }
+         }
+      },
+      "400error":{
+         "properties":{
+            "message":{
+               "type":"string",
+               "example":"400 Bad Request"
+            }
+         }
+      }
+   }
+}

@@ -31,9 +31,7 @@ module.exports = function(express){
     // });
 
     router.route('/')
-        .get((req,res) => {
-            res.end('Welcome to the coolest api');
-        });
+        .get((req,res) => res.end('Welcome to the coolest api'));
 
     router.route('/authenticate')
         .post((req,res) => {
@@ -46,7 +44,7 @@ module.exports = function(express){
     router.route('/notes')
         .get((req,res) => {
             db.GetAllNotes((err, notes) => {
-                if(err)
+                if(err) 
                     res.json({error : err});
 
                 res.json(notes);
