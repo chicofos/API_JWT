@@ -1428,6 +1428,7 @@
   display: inline-block;
   clear: none;
   margin: 0 10px 0 0;
+  margin-top: 8px;
 }
 .swagger-section #api_selector input {
   font-size: 0.9em;
@@ -1491,4 +1492,11 @@
 .swagger-section .error {
   outline-color: #cc0000;
   background-color: #f2dede;
+}
+
+
+.link-git{
+  color: white !important;
+  text-decoration: none;
+  padding-top:15px
 }
