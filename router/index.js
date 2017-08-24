@@ -1,91 +1,83 @@
 var db = require('../persistence');
-var jwt    = require('jsonwebtoken');
-var config = require('../config.js');
+var jwt = require('../jwt');
 
 module.exports = function(express){
 
     var router = express.Router();
 
-    // router.use((req,res,next) => {
+    //TODO: Note/User validations
 
-    //     if(req.url == '/authenticate' || req.url == '/setup')
-    //         return next();
+    //Middleware to validate token
+    router.use((req,res,next) => {
 
-    //     var token = req.body.token || req.headers.authorization || req.headers['x-access-token'];
+        if(req.url == '/authenticate' || req.url == '/setup')
+            return next();
 
-    //     if(token){
-    //         jwt.verify(token, config.secret, (err,decoded) => {
-    //             if(err){
-    //                return res.json({success : false, message : err.message });
-    //             }else{
-    //                 req.decoded = decoded;
-    //                 next();
-    //             }
-    //         });
-    //     }else{
-    //        return res.status(403).send({ 
-    //             success: false, 
-    //             message: 'No token provided.' 
-    //         }); 
-    //     }
-    // });
+        let token = req.body.token || req.headers.authorization || req.headers['x-access-token'];
+
+        jwt.validateToken(token)
+            .then((result) => {
+                
+                if(!result.success) 
+                    res.status(403).send(result);
+
+                req.decoded = result.decoded;
+                next();
+            })
+            .catch((error) => res.json({ Error : error })) 
+    });
 
     router.route('/')
         .get((req,res) => res.end('Welcome to the coolest api'));
 
     router.route('/authenticate')
         .post((req,res) => {
-            db.Authenticate(req, (err, response) => {
-                res.setHeader('Content-Type', 'text/javascript');
-                err ? res.json({error : err}) : res.json(response);
-            })
+
+            let user = { name : req.body.name, password : req.body.password }
+
+            db.Authenticate(user)
+                .then((token) => res.json(token))
+                .catch((error) => res.json({ Error : error })) 
         });
 
     router.route('/notes')
         .get((req,res) => {
-            db.GetAllNotes((err, notes) => {
-                if(err) 
-                    res.json({error : err});
-
-                res.json(notes);
-            });
+            db.GetAllNotes()
+                .then((notes) => res.json(notes))
+                .catch((error) => res.json({ Error : error })) 
         })
         .post((req,res) => {
-
-            db.CreateNote(req, (err) => {
-                if(err)
-                    res.json({error : err});
-
-                res.json({ message : 'Note created successfully' });
-            })
+            db.CreateNote(req.body.text)
+                .then((note) => res.json(note))
+                .catch((error) => res.json({ Error : error }))
         });
 
     router.route('/notes/:id')
-        .get((req,res)=>{
-            db.GetNote(req.params.id, (err, note) => {
-                if(err)
-                    res.json({error : err });
-                
-                res.json(note);
-            });
+        .get((req,res) => {
+            db.GetNote(req.params.id)
+                .then((note) => res.json(note))
+                .catch((error) => res.json({ Error : error }))
         })
         .put((req,res) => {
-            db.UpdateNote(req, (err) => {
-                err ? res.json({ error : err }) : res.json({ message: "Note updated" }); 
-            });
+
+            let newNote = { id : req.params.id, text : req.body.text }
+
+            db.UpdateNote(newNote)
+                .then((note) => res.json(note))
+                .catch((error) => res.json({ Error : error }))
         })
-        .delete( (req,res) => {
-            db.DeleteNote(req, (err) => {
-                err ? res.json({ error : err }) : res.json({ message: "Note deleted" });
-            });
+        .delete((req,res) => {
+            db.DeleteNote(req.params.id)
+                .then((message) => res.json(message))
+                .catch((error) => res.json({ Error : error }))
         });
 
-        router.route('/setup')
-            .get((req,res) => {
-                db.CreateUser((err) => {
-                    err ? res.json({error : err}) : res.json({message : 'User created successfully'});
-                })
-            });
+    router.route('/setup')
+        .get((req,res) => {
+            db.CreateUser()
+                .then((message) => res.json(message))
+                .catch((error) => res.json({ Error : error }))
+        });
 
     return router;
 }
