@@ -10,8 +10,10 @@ Expiration token: 300 sec
 | /api/notes/       | POST    | Add new note             |
 | /api/notes/:id    | PUT     | Update a note            |
 | /api/notes/:id    | DELETE  | Delete a note            |
-| ~~/api/setup~~        | GET     | Creates a test user      |
-| ~~/api/authenticate~~ | POST    | Get authentication token |
+| /api/setup        | GET     | Creates a test user      |
+| /api/authenticate | POST    | Get authentication token |
 
- **Note:** JWT disabled for testing purposes <br/>
+
  **Example:** https://api-note.herokuapp.com/
+ **Note:** JWT disabled for testing purposes<br/>
+ 
