@@ -28,7 +28,7 @@
     "jsonwebtoken": "^7.1.9",
     "mongoose": "^4.6.0",
     "morgan": "^1.8.2",
-    "swagger-node-express": "~2.0",
+    "swagger-node-express": "~2.1.0",
     "minimist": "*"
   }
 }
