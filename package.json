@@ -26,7 +26,7 @@
     "cors": "^2.8.4",
     "express": "^4.14.0",
     "jsonwebtoken": "^7.1.9",
-    "mongoose": "^4.6.0",
+    "mongoose": "^5.7.5",
     "morgan": "^1.8.2",
     "swagger-node-express": "~2.0",
     "minimist": "*"
